@@ -2,17 +2,17 @@ from django.contrib import admin
 from django.shortcuts import reverse
 from django.utils.html import format_html
 
-from .models import Dish, DishIngredientItem, Ingredient
+from .models import Recipe, Product, RecipeProductItem
 
 
-class DishIngredientItemInline(admin.TabularInline):
-    model = DishIngredientItem
-    raw_id_fields = ['ingredient']
+class RecipeProductItemInline(admin.TabularInline):
+    model = RecipeProductItem
+    raw_id_fields = ['product']
     extra = 0
 
 
-@admin.register(Dish)
-class DishAdmin(admin.ModelAdmin):
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
     list_display = [
         'get_image_list_preview',
         'name',
@@ -23,7 +23,7 @@ class DishAdmin(admin.ModelAdmin):
     ]
 
     inlines = [
-        DishIngredientItemInline
+        RecipeProductItemInline
     ]
 
     readonly_fields = [
@@ -39,13 +39,13 @@ class DishAdmin(admin.ModelAdmin):
     def get_image_list_preview(self, obj):
         if not obj.image or not obj.id:
             return 'нет картинки'
-        edit_url = reverse('admin:recipes_dish_change', args=(obj.id,))
+        edit_url = reverse('admin:recipes_recipe_change', args=(obj.id,))
         return format_html('<a href="{edit_url}"><img src="{src}" style="max-height: 50px;"/></a>', edit_url=edit_url, src=obj.image.url)
     get_image_list_preview.short_description = 'превью'
 
 
-@admin.register(Ingredient)
-class IngredientAdmin(admin.ModelAdmin):
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'number_of_uses',
@@ -62,20 +62,20 @@ class IngredientAdmin(admin.ModelAdmin):
     ]
 
     inlines = [
-        DishIngredientItemInline
+        RecipeProductItemInline
     ]
 
 
-@admin.register(DishIngredientItem)
-class DishIngredientItemAdmin(admin.ModelAdmin):
+@admin.register(RecipeProductItem)
+class RecipeProductItemAdmin(admin.ModelAdmin):
     list_display = [
-        'dish',
-        'ingredient',
-        'quantity',
+        'recipe',
+        'product',
+        'weight',
     ]
 
     list_filter = [
-        'dish',
-        'ingredient',
-        'quantity',
+        'recipe',
+        'product',
+        'weight',
     ]

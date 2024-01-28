@@ -1,25 +1,25 @@
 from rest_framework import serializers
 
-from .models import Dish, Ingredient, DishIngredientItem
+from .models import Recipe, Product, RecipeProductItem
 
 
-class DishItemUpdateSerializer(serializers.ModelSerializer):
-    ingredient_id = serializers.ModelField(model_field=Ingredient()._meta.get_field('id'))
-    ingredient_quantity = serializers.ModelField(model_field=DishIngredientItem()._meta.get_field('quantity'))
+class RecipeItemUpdateSerializer(serializers.ModelSerializer):
+    product_id = serializers.ModelField(model_field=Product()._meta.get_field('id'))
+    weight = serializers.ModelField(model_field=RecipeProductItem()._meta.get_field('weight'))
 
     def update(self, instance, validated_data):
-        ingredient = Ingredient.objects.get(id=validated_data['ingredient_id'])
-        item, created = DishIngredientItem.objects.update_or_create(
-            ingredient=ingredient,
-            dish=instance,
+        product = Product.objects.get(id=validated_data['product_id'])
+        item, created = RecipeProductItem.objects.update_or_create(
+            product=product,
+            recipe=instance,
             defaults={
-                'quantity': validated_data['ingredient_quantity'],
+                'weight': validated_data['weight'],
             }
         )
 
         return item
 
     class Meta:
-        model = Dish
-        fields = ['ingredient_id', 'ingredient_quantity']
+        model = Recipe
+        fields = ['product_id', 'weight']
 

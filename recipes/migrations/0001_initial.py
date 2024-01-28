@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50, verbose_name='Название блюда')),
                 ('description', models.TextField(blank=True, max_length=500, verbose_name='Описание')),
                 ('recipe', models.TextField(verbose_name='Рецепт')),
-                ('image', models.ImageField(upload_to='dishes_images', verbose_name='Картинка')),
+                ('image', models.ImageField(upload_to='recipes_images', verbose_name='Картинка')),
             ],
             options={
                 'verbose_name': 'Блюдо',

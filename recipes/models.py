@@ -2,9 +2,9 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
-class Ingredient(models.Model):
+class Product(models.Model):
     name = models.CharField(
-        'Название ингредиента',
+        'Название продукта',
         max_length=50,
     )
 
@@ -14,16 +14,16 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингредиент'
-        verbose_name_plural = 'Ингредиенты'
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
 
     def __str__(self):
         return self.name
 
 
-class Dish(models.Model):
+class Recipe(models.Model):
     name = models.CharField(
-        'Название блюда',
+        'Название рецепта',
         max_length=50,
     )
 
@@ -33,46 +33,46 @@ class Dish(models.Model):
         blank=True,
     )
 
-    recipe = models.TextField(
-        'Рецепт',
+    text = models.TextField(
+        'Текст рецепта',
     )
 
     image = models.ImageField(
         'Картинка',
-        upload_to='dishes_images',
+        upload_to='recipes_images',
     )
 
     class Meta:
-        verbose_name = 'Блюдо'
-        verbose_name_plural = 'Блюда'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return self.name
 
 
-class DishIngredientItem(models.Model):
-    dish = models.ForeignKey(
-        Dish,
-        verbose_name='Блюдо',
+class RecipeProductItem(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
         on_delete=models.CASCADE,
-        related_name='dish_items',
+        related_name='recipe_items',
     )
 
-    ingredient = models.ForeignKey(
-        Ingredient,
-        verbose_name='Ингредиент',
+    product = models.ForeignKey(
+        Product,
+        verbose_name='Продукт',
         on_delete=models.CASCADE,
-        related_name='ingredient_items',
+        related_name='product_items',
     )
 
-    quantity = models.PositiveIntegerField(
-        'Количество ингредиента',
+    weight = models.PositiveIntegerField(
+        'Вес продукта',
         validators=[MinValueValidator(1)],
     )
 
     class Meta:
-        verbose_name = 'Ингредиент в блюде'
-        verbose_name_plural = 'Ингредиенты в блюде'
+        verbose_name = 'Продукт в рецепте'
+        verbose_name_plural = 'Продукты в блюде'
 
     def __str__(self):
-        return f'{self.ingredient.name} для {self.dish.name}'
+        return f'{self.product.name} для {self.recipe.name}'

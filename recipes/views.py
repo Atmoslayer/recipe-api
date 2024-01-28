@@ -5,6 +5,9 @@ from .models import Recipe
 from .serializers import RecipeItemUpdateSerializer
 
 
-class AddProductViewSet(mixins.UpdateModelMixin, GenericViewSet):
+class UpdateRecipeProductViewSet(mixins.UpdateModelMixin, GenericViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeItemUpdateSerializer
+
+
+class

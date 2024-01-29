@@ -73,6 +73,7 @@ class RecipeProductItem(models.Model):
     class Meta:
         verbose_name = 'Продукт в рецепте'
         verbose_name_plural = 'Продукты в блюде'
+        unique_together = ('recipe', 'product')
 
     def __str__(self):
         return f'{self.product.name} для {self.recipe.name}'

@@ -1,4 +1,5 @@
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 
 from recipes.views import show_recipes_without_product
 from . import settings
@@ -25,4 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('recipes.urls')),
     path('show_recipes_without_product/<int:product_id>/', show_recipes_without_product),
+    path('', lambda request: redirect('api/v1/'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

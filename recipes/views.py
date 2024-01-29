@@ -1,8 +1,10 @@
+from django.db.models import Prefetch, Q
+from django.shortcuts import render
 from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Recipe
+from .models import Recipe, RecipeProductItem
 from .serializers import RecipeItemUpdateSerializer, RecipeProductIncreaseSerializer
 
 
@@ -28,3 +30,20 @@ class IncreaseRecipeProductViewSet(mixins.UpdateModelMixin, GenericViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.instance.data)
+
+
+def show_recipes_without_product(request, product_id):
+
+    forbidden_items = RecipeProductItem.objects.filter(Q(product_id=product_id, weight__gte=10))
+    available_recipes = Recipe.objects.exclude(recipe_items__in=forbidden_items)
+
+    context = {
+        'recipes': [
+            {
+                'id': recipe.id,
+                'name': recipe.name,
+            } for recipe in available_recipes
+        ]
+    }
+
+    return render(request, template_name='main.html', context=context)

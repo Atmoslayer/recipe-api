@@ -1,5 +1,6 @@
 from django.conf.urls.static import static
 
+from recipes.views import show_recipes_without_product
 from . import settings
 
 """cookbook URL Configuration
@@ -23,4 +24,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('recipes.urls')),
+    path('show_recipes_without_product/<int:product_id>/', show_recipes_without_product),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

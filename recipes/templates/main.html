@@ -1,0 +1,22 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <caption>Рецепты, в которых выбранный продукт отсутствует или его количество меньше 10 грамм</caption>
+    <tr>
+        <th>Идентификатор рецепта</th>
+        <th>Название рецепта</th>
+    </tr>
+    {% for recipe in recipes %}
+    <tr>
+            <td>{{ recipe.id }}</td>
+            <td>{{ recipe.name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
